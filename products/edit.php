@@ -4,7 +4,7 @@ require_once __DIR__ . '/../db.php';
 $id = $_GET['id'] ?? null;
 if (!$id) { header('Location: list.php'); exit; }
 
-$stmt = $pdo->prepare('SELECT * FROM products WHERE product_id = :id');
+$stmt = $pdo->prepare('SELECT * FROM productos WHERE product_id = :id');
 $stmt->execute(['id'=>$id]);
 $product = $stmt->fetch();
 if (!$product) { header('Location: list.php'); exit; }
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare('UPDATE products SET product_name=:n, foto=:f, model_year=:y, price=:p WHERE product_id=:id');
+    $stmt = $pdo->prepare('UPDATE productos SET product_name=:n, foto=:f, model_year=:y, price=:p WHERE product_id=:id');
         $stmt->execute(['n'=>$name,'f'=>$fotoName,'y'=>$year,'p'=>$price,'id'=>$id]);
         header('Location: list.php');
         exit;

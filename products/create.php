@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare("INSERT INTO products (product_name, foto, model_year, price) VALUES (:n, :f, :y, :p)");
+    $stmt = $pdo->prepare("INSERT INTO productos (product_name, foto, model_year, price) VALUES (:n, :f, :y, :p)");
         $stmt->execute(['n'=>$name, 'f'=>$fotoName, 'y'=>$year, 'p'=>$price]);
         header('Location: list.php');
         exit;

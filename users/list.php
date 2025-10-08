@@ -2,10 +2,10 @@
 require_once __DIR__ . '/../db.php';
 $search = $_GET['search'] ?? '';
 if ($search) {
-    $stmt = $pdo->prepare("SELECT user_id, usuario, email FROM users WHERE usuario LIKE :s OR email LIKE :s ORDER BY user_id DESC");
+    $stmt = $pdo->prepare("SELECT user_id, usuario, email FROM usuarios WHERE usuario LIKE :s OR email LIKE :s ORDER BY user_id DESC");
     $stmt->execute(['s' => "%$search%"]);
 } else {
-    $stmt = $pdo->query("SELECT user_id, usuario, email FROM users ORDER BY user_id DESC");
+    $stmt = $pdo->query("SELECT user_id, usuario, email FROM usuarios ORDER BY user_id DESC");
 }
 $users = $stmt->fetchAll();
 ?>

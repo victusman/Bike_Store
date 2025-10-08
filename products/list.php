@@ -3,10 +3,10 @@ require_once __DIR__ . '/../db.php';
 
 $search = $_GET['search'] ?? '';
 if ($search) {
-    $stmt = $pdo->prepare("SELECT * FROM products WHERE product_name LIKE :s ORDER BY product_id DESC");
+    $stmt = $pdo->prepare("SELECT * FROM productos WHERE product_name LIKE :s ORDER BY product_id DESC");
     $stmt->execute(['s' => "%$search%"]);
 } else {
-    $stmt = $pdo->query("SELECT * FROM products ORDER BY product_id DESC");
+    $stmt = $pdo->query("SELECT * FROM productos ORDER BY product_id DESC");
 }
 $products = $stmt->fetchAll();
 ?>

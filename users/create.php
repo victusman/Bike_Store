@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email && !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Email inválido.';
 
     // verificar usuario único
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE usuario = :u');
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM usuarios WHERE usuario = :u');
     $stmt->execute(['u'=>$usuario]);
     if ($stmt->fetchColumn() > 0) $errors[] = 'El nombre de usuario ya existe.';
 
     if (empty($errors)) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (usuario, password, email) VALUES (:u, :p, :e)');
+    $stmt = $pdo->prepare('INSERT INTO usuarios (usuario, password, email) VALUES (:u, :p, :e)');
         $stmt->execute(['u'=>$usuario,'p'=>$hash,'e'=>$email]);
         header('Location: list.php');
         exit;

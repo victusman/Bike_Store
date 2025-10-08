@@ -4,7 +4,7 @@ require_once __DIR__ . '/../db.php';
 $id = $_GET['id'] ?? null;
 if (!$id) { header('Location: list.php'); exit; }
 
-$stmt = $pdo->prepare('SELECT user_id, usuario, email FROM users WHERE user_id = :id');
+$stmt = $pdo->prepare('SELECT user_id, usuario, email FROM usuarios WHERE user_id = :id');
 $stmt->execute(['id'=>$id]);
 $user = $stmt->fetch();
 if (!$user) { header('Location: list.php'); exit; }
@@ -19,17 +19,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email && !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Email inválido.';
 
     // verificar usuario único (excepto el actual)
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE usuario = :u AND user_id != :id');
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM usuarios WHERE usuario = :u AND user_id != :id');
     $stmt->execute(['u'=>$usuario,'id'=>$id]);
     if ($stmt->fetchColumn() > 0) $errors[] = 'El nombre de usuario ya existe.';
 
     if (empty($errors)) {
         if ($password !== '') {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare('UPDATE users SET usuario=:u, password=:p, email=:e WHERE user_id=:id');
+            $stmt = $pdo->prepare('UPDATE usuarios SET usuario=:u, password=:p, email=:e WHERE user_id=:id');
             $stmt->execute(['u'=>$usuario,'p'=>$hash,'e'=>$email,'id'=>$id]);
         } else {
-            $stmt = $pdo->prepare('UPDATE users SET usuario=:u, email=:e WHERE user_id=:id');
+            $stmt = $pdo->prepare('UPDATE usuarios SET usuario=:u, email=:e WHERE user_id=:id');
             $stmt->execute(['u'=>$usuario,'e'=>$email,'id'=>$id]);
         }
         header('Location: list.php');
