@@ -39,14 +39,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <?php include __DIR__ . '/../../templates/header.php'; ?>
 <h2>Editar Producto</h2>
-<p><a href="index.php">Volver a lista</a></p>
-<?php if ($errors): ?><ul style="color:red;"> <?php foreach($errors as $e) echo "<li>".htmlspecialchars($e)."</li>"; ?> </ul><?php endif; ?>
-<form method="post" enctype="multipart/form-data">
-    <label>Nombre: <input type="text" name="product_name" value="<?php echo htmlspecialchars($product['product_name']); ?>" required></label><br>
-    <label>Año: <input type="number" name="model_year" value="<?php echo htmlspecialchars($product['model_year']); ?>" min="1900" max="2100"></label><br>
-    <label>Precio: <input type="number" step="0.01" name="price" value="<?php echo htmlspecialchars($product['price']); ?>"></label><br>
-    <p>Foto actual: <?php if ($product['foto']): ?><img src="../../uploads/<?php echo htmlspecialchars($product['foto']); ?>" style="max-width:120px;" alt="foto"><?php else: echo '—'; endif; ?></p>
-    <label>Nueva foto (opcional): <input type="file" name="foto" accept="image/*"></label><br>
-    <button type="submit">Guardar</button>
+<p><a class="btn btn-link" href="index.php">&laquo; Volver a lista</a></p>
+<?php if ($errors): ?><div class="alert alert-danger"><?php foreach($errors as $e) echo "<div>".htmlspecialchars($e)."</div>"; ?></div><?php endif; ?>
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    <div class="col-12">
+        <label class="form-label">Nombre</label>
+        <input class="form-control" type="text" name="product_name" value="<?php echo htmlspecialchars($product['product_name']); ?>" required>
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Año</label>
+        <input class="form-control" type="number" name="model_year" value="<?php echo htmlspecialchars($product['model_year']); ?>" min="1900" max="2100">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Precio</label>
+        <input class="form-control" type="number" step="0.01" name="price" value="<?php echo htmlspecialchars($product['price']); ?>">
+    </div>
+    <div class="col-12">
+        <p>Foto actual: <?php if ($product['foto']): ?><img src="../../uploads/<?php echo htmlspecialchars($product['foto']); ?>" style="max-width:120px;" alt="foto"><?php else: echo '—'; endif; ?></p>
+    </div>
+    <div class="col-12">
+        <label class="form-label">Nueva foto (opcional)</label>
+        <input class="form-control" type="file" name="foto" accept="image/*">
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success" type="submit">Guardar</button>
+    </div>
 </form>
 <?php include __DIR__ . '/../../templates/footer.php'; ?>

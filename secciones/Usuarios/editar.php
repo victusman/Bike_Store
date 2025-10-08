@@ -38,12 +38,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <?php include __DIR__ . '/../../templates/header.php'; ?>
 <h2>Editar Usuario</h2>
-<p><a href="index.php">Volver a lista</a></p>
-<?php if ($errors): ?><ul style="color:red;"> <?php foreach($errors as $e) echo "<li>".htmlspecialchars($e)."</li>"; ?> </ul><?php endif; ?>
-<form method="post">
-    <label>Usuario: <input type="text" name="usuario" value="<?php echo htmlspecialchars($user['usuario']); ?>" required></label><br>
-    <label>Email: <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"></label><br>
-    <label>Contraseña (dejar en blanco para no cambiar): <input type="password" name="password"></label><br>
-    <button type="submit">Guardar</button>
+<p><a class="btn btn-link" href="index.php">&laquo; Volver a lista</a></p>
+<?php if ($errors): ?><div class="alert alert-danger"><?php foreach($errors as $e) echo "<div>".htmlspecialchars($e)."</div>"; ?></div><?php endif; ?>
+<form method="post" class="row g-3">
+    <div class="col-12">
+        <label class="form-label">Usuario</label>
+        <input class="form-control" type="text" name="usuario" value="<?php echo htmlspecialchars($user['usuario']); ?>" required>
+    </div>
+    <div class="col-12">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
+    </div>
+    <div class="col-12">
+        <label class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+        <input class="form-control" type="password" name="password">
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success" type="submit">Guardar</button>
+    </div>
 </form>
 <?php include __DIR__ . '/../../templates/footer.php'; ?>

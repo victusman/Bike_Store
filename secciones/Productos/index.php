@@ -11,14 +11,21 @@ if ($search) {
 $products = $stmt->fetchAll();
 ?>
 <?php include __DIR__ . '/../../templates/header.php'; ?>
-<h2>Productos</h2>
-<p><a href="crear.php">Crear producto</a></p>
-<form method="get" style="margin-bottom:10px;">
-    <input type="text" name="search" placeholder="Buscar..." value="<?php echo htmlspecialchars($search); ?>">
-    <button type="submit">Buscar</button>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Productos</h2>
+    <a class="btn btn-primary" href="crear.php">Crear producto</a>
+</div>
+<form method="get" class="mb-3 row g-2">
+    <div class="col-auto">
+        <input class="form-control" type="text" name="search" placeholder="Buscar..." value="<?php echo htmlspecialchars($search); ?>">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    </div>
 </form>
-<table>
-    <thead><tr><th>ID</th><th>Nombre</th><th>Foto</th><th>Año</th><th>Precio</th><th>Acciones</th></tr></thead>
+<div class="table-responsive">
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-light"><tr><th>ID</th><th>Nombre</th><th>Foto</th><th>Año</th><th>Precio</th><th>Acciones</th></tr></thead>
     <tbody>
     <?php foreach($products as $p): ?>
     <tr>
@@ -28,11 +35,12 @@ $products = $stmt->fetchAll();
         <td><?php echo $p['model_year']; ?></td>
         <td><?php echo number_format($p['price'],2); ?></td>
         <td>
-            <a href="editar.php?id=<?php echo $p['product_id']; ?>">Editar</a> |
-            <a href="../../products/delete.php?id=<?php echo $p['product_id']; ?>" onclick="return confirm('Eliminar este producto?');">Borrar</a>
+            <a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $p['product_id']; ?>">Editar</a>
+            <a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $p['product_id']; ?>" onclick="return confirm('Eliminar este producto?');">Borrar</a>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 <?php include __DIR__ . '/../../templates/footer.php'; ?>
