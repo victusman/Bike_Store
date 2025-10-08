@@ -5,13 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bike Store</title>
         <!-- Bootstrap 5 CSS: preferir local en assets/ si existe, si no usar CDN -->
-        <?php if (file_exists(__DIR__ . '/../assets/css/bootstrap.min.css')): ?>
-            <!-- Local Bootstrap with SRI (SHA384) -->
-            <link href="/Bike_Store/assets/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <?php else: ?>
-            <!-- CDN fallback with SRI -->
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <?php endif; ?>
+        <!-- Usar siempre la copia local de Bootstrap (versión 5) descargada en assets/ -->
+        <link href="/Bike_Store/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="/Bike_Store/assets/css/custom.css" rel="stylesheet">
 </head>
 <body class="bg-light">
