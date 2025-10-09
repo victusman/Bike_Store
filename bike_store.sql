@@ -14,13 +14,29 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Tabla de productos
+-- Tabla de categorias
+CREATE TABLE IF NOT EXISTS `categoria` (
+  `category_id` INT NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Datos de ejemplo para categorias
+INSERT INTO `categoria` (`descripcion`) VALUES
+('Montaña'),
+('Urbana');
+
+-- Tabla de productos (ahora relacionada con categoria)
 CREATE TABLE IF NOT EXISTS `productos` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(255) NOT NULL,
   `foto` VARCHAR(255) DEFAULT NULL,
   `model_year` YEAR DEFAULT NULL,
   `price` DECIMAL(10,2) DEFAULT 0.00,
-  PRIMARY KEY (`product_id`)
+  `category_id` INT DEFAULT NULL,
+  PRIMARY KEY (`product_id`),
+  KEY `fk_product_categoria_idx` (`category_id`),
+  CONSTRAINT `fk_product_categoria` FOREIGN KEY (`category_id`) REFERENCES `categoria` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Datos de ejemplo (opcional)

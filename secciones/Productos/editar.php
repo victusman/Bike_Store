@@ -9,11 +9,16 @@ $stmt->execute(['id'=>$id]);
 $product = $stmt->fetch();
 if (!$product) { header('Location: index.php'); exit; }
 
+// cargar categorías para el select
+$catStmt = $pdo->query('SELECT * FROM categoria ORDER BY descripcion');
+$categorias = $catStmt->fetchAll();
+
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['product_name'] ?? '');
     $year = $_POST['model_year'] ?? null;
     $price = $_POST['price'] ?? 0;
+    $category_id = $_POST['category_id'] ?? null;
 
     if ($name === '') $errors[] = 'El nombre es requerido.';
 
@@ -30,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-    $stmt = $pdo->prepare('UPDATE productos SET product_name=:n, foto=:f, model_year=:y, price=:p WHERE product_id=:id');
-        $stmt->execute(['n'=>$name,'f'=>$fotoName,'y'=>$year,'p'=>$price,'id'=>$id]);
+    $stmt = $pdo->prepare('UPDATE productos SET product_name=:n, foto=:f, model_year=:y, price=:p, category_id=:c WHERE product_id=:id');
+        $stmt->execute(['n'=>$name,'f'=>$fotoName,'y'=>$year,'p'=>$price,'c'=>$category_id ?: null,'id'=>$id]);
         header('Location: index.php');
         exit;
     }
@@ -53,6 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="col-md-4">
         <label class="form-label">Precio</label>
         <input class="form-control" type="number" step="0.01" name="price" value="<?php echo htmlspecialchars($product['price']); ?>">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" name="category_id">
+            <option value="">— Sin categoría —</option>
+            <?php foreach($categorias as $c): ?>
+                <option value="<?php echo $c['category_id']; ?>" <?php if ($product['category_id']==$c['category_id']) echo 'selected'; ?>><?php echo htmlspecialchars($c['descripcion']); ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <div class="col-12">
         <p>Foto actual: <?php if ($product['foto']): ?><img src="../../uploads/<?php echo htmlspecialchars($product['foto']); ?>" style="max-width:120px;" alt="foto"><?php else: echo '—'; endif; ?></p>

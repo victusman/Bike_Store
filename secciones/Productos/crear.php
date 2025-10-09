@@ -1,11 +1,16 @@
 <?php
 require_once __DIR__ . '/../../bd.php';
 
+// cargar categorías para el select
+$catStmt = $pdo->query('SELECT * FROM categoria ORDER BY descripcion');
+$categorias = $catStmt->fetchAll();
+
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['product_name'] ?? '');
     $year = $_POST['model_year'] ?? null;
     $price = $_POST['price'] ?? 0;
+    $category_id = $_POST['category_id'] ?? null;
 
     if ($name === '') $errors[] = 'El nombre es requerido.';
 
@@ -19,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-    $stmt = $pdo->prepare("INSERT INTO productos (product_name, foto, model_year, price) VALUES (:n, :f, :y, :p)");
-        $stmt->execute(['n'=>$name, 'f'=>$fotoName, 'y'=>$year, 'p'=>$price]);
+    $stmt = $pdo->prepare("INSERT INTO productos (product_name, foto, model_year, price, category_id) VALUES (:n, :f, :y, :p, :c)");
+        $stmt->execute(['n'=>$name, 'f'=>$fotoName, 'y'=>$year,'p'=>$price,'c'=>$category_id ?: null]);
         header('Location: index.php');
         exit;
     }
@@ -42,6 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="col-md-4">
         <label class="form-label">Precio</label>
         <input class="form-control" type="number" step="0.01" name="price" value="0.00">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" name="category_id">
+            <option value="">— Sin categoría —</option>
+            <?php foreach($categorias as $c): ?>
+                <option value="<?php echo $c['category_id']; ?>"><?php echo htmlspecialchars($c['descripcion']); ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <div class="col-12">
         <label class="form-label">Foto</label>
