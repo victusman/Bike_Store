@@ -25,16 +25,18 @@ $products = $stmt->fetchAll();
 </form>
 <div class="table-responsive">
 <table class="table table-striped table-hover align-middle">
-    <thead class="table-light"><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Foto</th><th>Año</th><th>Precio</th><th>Acciones</th></tr></thead>
+    <thead class="table-light"><tr><th>ID</th><th>Nombre</th><th>Foto</th><th>Año</th><th>Precio</th><th>Categoría</th><th>Acciones</th></tr></thead>
     <tbody>
     <?php foreach($products as $p): ?>
     <tr>
         <td><?php echo $p['product_id']; ?></td>
         <td><?php echo htmlspecialchars($p['product_name']); ?></td>
-        <td><?php echo $p['categoria'] ? htmlspecialchars($p['categoria']) : '—'; ?></td>
+
         <td><?php if ($p['foto']): ?><img src="../../uploads/<?php echo htmlspecialchars($p['foto']); ?>" style="max-width:80px;" alt="foto"><?php else: echo '—'; endif; ?></td>
         <td><?php echo $p['model_year']; ?></td>
         <td><?php echo number_format($p['price'],2); ?></td>
+
+         <td><?php echo $p['categoria'] ? htmlspecialchars($p['categoria']) : '—'; ?></td>
         <td>
             <a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $p['product_id']; ?>">Editar</a>
             <a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $p['product_id']; ?>" onclick="return confirm('Eliminar este producto?');">Borrar</a>
