@@ -9,7 +9,7 @@
         <link href="/Bike_Store/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="/Bike_Store/assets/css/custom.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="d-flex flex-column min-vh-100 bg-light">
 <header class="bg-white shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
@@ -20,8 +20,12 @@
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/index.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Categorias/index.php">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Clientes/index.php">Clientes</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Productos/index.php">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Pedidos/index.php">Pedidos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Usuarios/index.php">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/logout.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

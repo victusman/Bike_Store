@@ -48,6 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php if ($errors): ?><div class="alert alert-danger"><?php foreach($errors as $e) echo "<div>".htmlspecialchars($e)."</div>"; ?></div><?php endif; ?>
 <form method="post" enctype="multipart/form-data" class="row g-3">
     <div class="col-12">
+        <label class="form-label">ID</label>
+        <input class="form-control" type="text" value="<?php echo $product['product_id']; ?>" readonly>
+    </div>
+    <div class="col-12">
         <label class="form-label">Nombre</label>
         <input class="form-control" type="text" name="product_name" value="<?php echo htmlspecialchars($product['product_name']); ?>" required>
     </div>
@@ -77,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <div class="col-12">
         <button class="btn btn-success" type="submit">Guardar</button>
+        <a class="btn btn-secondary ms-2" href="index.php">Cancelar</a>
     </div>
 </form>
 <?php include __DIR__ . '/../../templates/footer.php'; ?>

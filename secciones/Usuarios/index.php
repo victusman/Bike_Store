@@ -33,7 +33,7 @@ $users = $stmt->fetchAll();
         <td><?php echo htmlspecialchars($u['email']); ?></td>
         <td>
             <a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $u['user_id']; ?>">Editar</a>
-            <a class="btn btn-sm btn-outline-danger" href="../../users/delete.php?id=<?php echo $u['user_id']; ?>" onclick="return confirm('Eliminar este usuario?');">Borrar</a>
+            <a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $u['user_id']; ?>" onclick="return confirm('Eliminar este usuario?');">Borrar</a>
         </td>
     </tr>
     <?php endforeach; ?>

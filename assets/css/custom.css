@@ -1,3 +1,7 @@
 /* Estilos personalizados para Bike Store */
-body { padding-bottom: 40px; }
+/* Layout: body usa flex-column (definido en header.php) y footer usa mt-auto para pegarse abajo */
+body { margin: 0; }
 .table img { max-width: 80px; }
+
+/* Ajustes de hero en la portada */
+.display-4 { font-weight: 600; }
