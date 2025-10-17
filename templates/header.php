@@ -21,11 +21,11 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/index.php">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Categorias/index.php">Categorías</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Clientes/index.php">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/customers/index.php">Clientes</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Productos/index.php">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Pedidos/index.php">Pedidos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Orders/index.php">Pedidos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Usuarios/index.php">Usuarios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/logout.php">Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/cerrar.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

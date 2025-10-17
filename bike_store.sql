@@ -21,10 +21,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Datos de ejemplo para categorias
-INSERT INTO `categoria` (`descripcion`) VALUES
-('Montaña'),
-('Urbana');
+
 
 -- Tabla de productos (ahora relacionada con categoria)
 CREATE TABLE IF NOT EXISTS `productos` (
@@ -38,6 +35,54 @@ CREATE TABLE IF NOT EXISTS `productos` (
   KEY `fk_product_categoria_idx` (`category_id`),
   CONSTRAINT `fk_product_categoria` FOREIGN KEY (`category_id`) REFERENCES `categoria` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE IF NOT EXISTS customer (
+    customer_id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(50),
+  email VARCHAR(255),
+    street VARCHAR(150),  
+    city VARCHAR(50),
+    state VARCHAR(50),    
+    zip_code VARCHAR(10),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE IF NOT EXISTS orders (
+    order_id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT(11) NOT NULL,
+    order_date DATE NOT NULL,
+  user_id INT(11) DEFAULT NULL,
+    estado VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    KEY `idx_orders_customer_id` (`customer_id`),
+    KEY `idx_orders_user_id` (`user_id`),
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+  FOREIGN KEY (user_id) REFERENCES `usuarios`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS order_items (
+    order_item_id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    order_id INT(11) NOT NULL,
+    product_id INT(11) NOT NULL,
+    quantity INT(11) NOT NULL DEFAULT 1,
+    price DECIMAL(10,2) NOT NULL,
+    discount DECIMAL(5,2) DEFAULT 0.00,
+  KEY `idx_order_items_order_id` (`order_id`),
+  KEY `idx_order_items_product_id` (`product_id`),
+  FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES productos(product_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- Datos de ejemplo para categorias
+INSERT INTO `categoria` (`descripcion`) VALUES
+('Montaña'),
+('Urbana');
 
 -- Datos de ejemplo (opcional)
 INSERT INTO `productos` (`product_name`, `foto`, `model_year`, `price`) VALUES

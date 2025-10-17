@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../auth.php';
 require_once __DIR__ . '/../../bd.php';
 // listado de productos (adaptado) — traer también la categoría
 $search = $_GET['search'] ?? '';
