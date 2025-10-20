@@ -72,6 +72,46 @@ CREATE TABLE `order_items` (
   CONSTRAINT `fk_Product` FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Table: stores (nueva tabla)
+DROP TABLE IF EXISTS `stores`;
+CREATE TABLE `stores` (
+  `store_id` INT NOT NULL AUTO_INCREMENT,
+  `store_name` VARCHAR(150) NOT NULL,
+  `phone` VARCHAR(50) DEFAULT NULL,
+  `email` VARCHAR(150) DEFAULT NULL,
+  `street` VARCHAR(255) DEFAULT NULL,
+  `city` VARCHAR(100) DEFAULT NULL,
+  `state` VARCHAR(100) DEFAULT NULL,
+  PRIMARY KEY (`store_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table: stocks (nueva tabla) - usa PK id_stock y FK a stores y products
+DROP TABLE IF EXISTS `stocks`;
+CREATE TABLE `stocks` (
+  `id_stock` INT NOT NULL AUTO_INCREMENT,
+  `store_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  `quantity` INT NOT NULL DEFAULT 0,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_stock`),
+  CONSTRAINT `fk_stocks_store` FOREIGN KEY (`store_id`) REFERENCES `stores`(`store_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_stocks_product` FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Vista: vw_stocks para facilitar listados
+DROP VIEW IF EXISTS `vw_stocks`;
+CREATE VIEW `vw_stocks` AS
+SELECT s.id_stock,
+       s.store_id,
+       st.store_name,
+       s.product_id,
+       p.product_name,
+       s.quantity,
+       s.updated_at
+FROM stocks s
+LEFT JOIN stores st ON s.store_id = st.store_id
+LEFT JOIN products p ON s.product_id = p.product_id;
+
 -- Full product INSERTs converted from migracionMysql.txt (one INSERT per row to preserve original data)
 INSERT INTO Products (product_name, model_year,list_price, category_id) VALUES 
 ('Trek 820 - 2017', 2017, 379.99, 1),

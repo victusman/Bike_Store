@@ -23,6 +23,8 @@
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Categorias/index.php">Categorías</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/customers/index.php">Clientes</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Productos/index.php">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/stocks/index.php">Stocks</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/stores/index.php">Tiendas</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Orders/index.php">Pedidos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Usuarios/index.php">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Bike_Store/cerrar.php">Cerrar Sesión</a></li>
