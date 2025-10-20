@@ -37,7 +37,7 @@ $stores = $stmt->fetchAll();
         <td><?php echo htmlspecialchars($s['city']); ?></td>
         <td>
             <a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $s['store_id']; ?>">Editar</a>
-            <a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $s['store_id']; ?>" onclick="return confirm('Eliminar esta tienda?');">Borrar</a>
+            <a class="btn btn-sm btn-outline-secondary ms-2" href="actualizar.php?id=<?php echo $s['store_id']; ?>">Actualizar</a>
         </td>
     </tr>
     <?php endforeach; ?>

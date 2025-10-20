@@ -37,7 +37,7 @@ $stocks = $stmt->fetchAll();
         <td><?php echo $s['updated_at']; ?></td>
         <td>
             <a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $s['id_stock']; ?>">Editar</a>
-            <a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $s['id_stock']; ?>" onclick="return confirm('Eliminar este registro de stock?');">Borrar</a>
+            <a class="btn btn-sm btn-outline-secondary ms-2" href="actualizar.php?id=<?php echo $s['id_stock']; ?>">Actualizar</a>
         </td>
     </tr>
     <?php endforeach; ?>
