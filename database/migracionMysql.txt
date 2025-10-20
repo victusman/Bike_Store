@@ -368,6 +368,9 @@ insert into Products values('Trek Checkpoint ALR 5 Women''s - 2019	',	2019	,	199
 insert into Products values('Trek Checkpoint SL 5 Women''s - 2019	',	2019	,	2799.99	);	
 insert into Products values('Trek Checkpoint SL 6 - 2019	',	2019	,	3799.99	);	
 insert into Products values('Trek Checkpoint ALR Frameset - 2019	',	2019	,	3199.99	);	
+
+
+
 --insertar clientes
 insert into customers values('	Debra	','	Burks	','		','	debra.burks@yahoo.com	','	9273 Thorne Ave.	','	Orchard Park	','	NY	',	14127	);		
 insert into customers values('	Kasha	','	Todd	','		','	kasha.todd@yahoo.com	','	910 Vine Street	','	Campbell	','	CA	',	95008	);		
@@ -1814,7 +1817,8 @@ insert into customers values('	Cassie	','	Cline	','		','	cassie.cline@gmail.com	
 insert into customers values('	Lezlie	','	Lamb	','		','	lezlie.lamb@gmail.com	','	401 Brandywine Street	','	Central Islip	','	NY	',	11722	);		
 insert into customers values('	Ivette	','	Estes	','		','	ivette.estes@gmail.com	','	88 N. Canterbury Ave.	','	Canandaigua	','	NY	',	14424	);		
 insert into customers values('	Ester	','	Acevedo	','		','	ester.acevedo@gmail.com	','	671 Miles Court	','	San Lorenzo	','	CA	',	94580	);		
-																	
+
+
 
 -- insertar ordenes
 insert into orders values(	259	,'	2017-01-01	'	);		
@@ -3434,6 +3438,8 @@ insert into orders values(	135	,'	2019-11-03	'	);
 insert into orders values(	136	,'	2019-11-03	'	);		
 
 
+
+
 --inserta detalle de orden
 insert into order_items values(	1	,	20	,	1	,	599.99	,	.20	);
 insert into order_items values(	1	,	8	,	2	,	1799.99	,	.07	);
@@ -4991,6 +4997,10 @@ insert into order_items values(	555	,	7	,	1	,	3999.99	,	.10	);
 insert into order_items values(	555	,	20	,	2	,	599.99	,	.07	);
 insert into order_items values(	556	,	16	,	1	,	599.99	,	.10	);
 insert into order_items values(	556	,	4	,	2	,	2899.99	,	.20	);
+
+
+
+
 insert into order_items values(	557	,	9	,	2	,	2999.99	,	.10	);
 insert into order_items values(	557	,	10	,	1	,	1549.00	,	.10	);
 insert into order_items values(	558	,	7	,	1	,	3999.99	,	.07	);
