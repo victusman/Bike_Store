@@ -91,9 +91,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<h4>Items</h4>
 	<div class="mb-3">
 		<table class="table" id="items-table">
-			<thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Descuento</th><th></th></tr></thead>
+			<thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Descuento</th><th>Subtotal</th><th></th></tr></thead>
 			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4" class="text-end"><strong>Total</strong></td>
+					<td><strong id="total-display">0.00</strong></td>
+					<td></td>
+				</tr>
+			</tfoot>
 		</table>
+		<input type="hidden" name="total" id="total-input" value="0">
 		<button type="button" id="add-item" class="btn btn-outline-secondary">Agregar Item</button>
 	</div>
 
@@ -125,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			<td><input type="number" class="form-control qty" value="1" min="1"></td>
 			<td><input type="text" class="form-control price"></td>
 			<td><input type="text" class="form-control discount" value="0"></td>
+			<td class="subtotal-cell">0.00</td>
 			<td><button type="button" class="btn btn-sm btn-danger remove">X</button></td>
 		`;
 		tbody.appendChild(tr);
@@ -134,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			tr.querySelector('.price').value = item.price;
 			tr.querySelector('.discount').value = item.discount;
 		}
+		updateRowSubtotal(tr);
 	}
 
 	addBtn.addEventListener('click', ()=> addRow());
@@ -148,7 +158,42 @@ document.addEventListener('DOMContentLoaded', function(){
 			const price = opt ? opt.dataset.price || '' : '';
 			e.target.closest('tr').querySelector('.price').value = price;
 		}
+		// cualquier cambio puede afectar subtotal
+		if (e.target.closest('tr')) updateRowSubtotal(e.target.closest('tr'));
 	});
+
+	// recalcular subtotal cuando cambian cantidad/precio/descuento
+	document.body.addEventListener('input', function(e){
+		if (e.target.classList.contains('qty') || e.target.classList.contains('price') || e.target.classList.contains('discount')){
+			const tr = e.target.closest('tr');
+			updateRowSubtotal(tr);
+		}
+	});
+
+	function parseNumber(v){
+		v = (v||'').toString().replace(',', '.');
+		const n = parseFloat(v);
+		return isNaN(n)?0:n;
+	}
+
+	function updateRowSubtotal(tr){
+		const qty = parseNumber(tr.querySelector('.qty').value);
+		const price = parseNumber(tr.querySelector('.price').value);
+		const discount = parseNumber(tr.querySelector('.discount').value);
+		const subtotal = Math.max(0, qty * price - discount);
+		tr.querySelector('.subtotal-cell').textContent = subtotal.toFixed(2);
+		updateTotal();
+	}
+
+	function updateTotal(){
+		let total = 0;
+		document.querySelectorAll('#items-table tbody tr').forEach(r=>{
+			const cell = r.querySelector('.subtotal-cell');
+			if (cell) total += parseNumber(cell.textContent);
+		});
+		document.getElementById('total-display').textContent = total.toFixed(2);
+		document.getElementById('total-input').value = total.toFixed(2);
+	}
 
 	saveBtn.addEventListener('click', function(e){
 		e.preventDefault();
@@ -161,6 +206,9 @@ document.addEventListener('DOMContentLoaded', function(){
 				discount: r.querySelector('.discount').value
 			};
 		}).filter(it=>it.product_id);
+		// antes de enviar, actualizar subtotales y total
+		rows.forEach(r=>updateRowSubtotal(r));
+		updateTotal();
 		// remove existing dynamic inputs
 		document.querySelectorAll('input[name^="items["]').forEach(n=>n.remove());
 		items.forEach((it,idx)=>{
