@@ -1,3 +1,10 @@
+<!--esto tiene que estar debajo de el booststrap --> 
+<!--paginacion de tablas --> 
+<!--- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+agregar  -->
+<!--- <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script> --->
 <!DOCTYPE html>
 <html lang="es">
 <head>
