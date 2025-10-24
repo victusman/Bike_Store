@@ -23,6 +23,7 @@ $orders = $stmt->fetchAll();
 		<td><?php echo htmlspecialchars($o['user_id']); ?></td>
 		<td>
 			<a class="btn btn-sm btn-outline-primary" href="ver.php?id=<?php echo $o['order_id']; ?>">Pedido Detalle</a>
+			<a class="btn btn-sm btn-outline-success" href="lista_orders.php?pdf=1&id=<?php echo $o['order_id']; ?>" title="Imprimir recibo del pedido" target="_blank">📄 PDF</a>
 			<a class="btn btn-sm btn-outline-danger" href="anular.php?id=<?php echo $o['order_id']; ?>" onclick="return confirm('Anular este pedido?');">Anular</a>
 		</td>
 	</tr>

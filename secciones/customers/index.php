@@ -25,6 +25,9 @@ $customers = $stmt->fetchAll();
 		<td><?php echo htmlspecialchars($c['city']); ?></td>
 		<td><?php echo htmlspecialchars($c['state']); ?></td>
 		<td>
+			<a class="btn btn-sm btn-outline-secondary" href="lista_clientes.php?pdf=1&id=<?php echo $c['customer_id']; ?>" target="_blank" title="Imprimir ficha del cliente">
+				<i class="bi bi-printer"></i> Imprimir
+			</a>
 			<a class="btn btn-sm btn-outline-primary" href="editar.php?id=<?php echo $c['customer_id']; ?>">Editar</a>
 			<a class="btn btn-sm btn-outline-danger" href="eliminar.php?id=<?php echo $c['customer_id']; ?>" onclick="return confirm('Eliminar este cliente?');">Eliminar</a>
 		</td>

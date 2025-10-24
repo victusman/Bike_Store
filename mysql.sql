@@ -48,8 +48,6 @@ CREATE TABLE `orders` (
   CONSTRAINT `FK_Customer` FOREIGN KEY (`customer_id`) REFERENCES `customers`(`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-
 -- Insert orders referencing customers 1..5. Use NULL for `estado` to avoid type issues
 -- and include created_at explicitly so timestamps are consistent.
 INSERT INTO `orders` (order_id, customer_id, user_id, order_date, estado, created_at) VALUES
@@ -84,6 +82,28 @@ CREATE TABLE `stores` (
   `state` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table: staffs (Empleados) - debe estar después de stores por la FK
+DROP TABLE IF EXISTS `staffs`;
+CREATE TABLE `staffs` (
+  `staff_id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `phone` VARCHAR(25) DEFAULT NULL,
+  `active` TINYINT(1) DEFAULT 1,
+  `store_id` INT DEFAULT NULL,
+  `manager_id` INT DEFAULT NULL,
+  PRIMARY KEY (`staff_id`),
+  CONSTRAINT `fk_staffs_store` FOREIGN KEY (`store_id`) REFERENCES `stores`(`store_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_staffs_manager` FOREIGN KEY (`manager_id`) REFERENCES `staffs`(`staff_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Inserts para staffs
+INSERT INTO `staffs` (staff_id, first_name, last_name, email, phone, active, store_id, manager_id) VALUES
+(1, 'John', 'Doe', 'john.doe@bikestore.com', '555-1111', 1, 1, NULL),
+(2, 'Alice', 'Smith', 'alice.smith@bikestore.com', '555-2222', 1, 2, 1),
+(3, 'Bob', 'Johnson', 'bob.johnson@bikestore.com', '555-3333', 0, 3, 1);
 
 -- Table: stocks (nueva tabla) - usa PK id_stock y FK a stores y products
 DROP TABLE IF EXISTS `stocks`;
