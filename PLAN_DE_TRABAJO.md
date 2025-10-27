@@ -110,51 +110,51 @@
 ### **FASE 2: FRONTEND PÚBLICO - CATÁLOGO** ⏱️ Estimado: 3-4 horas
 
 #### Paso 2.1: Página de Inicio Pública
-- [ ] Crear `cliente/index.php` - Home page pública
-- [ ] Implementar carrusel con 5 productos destacados (Bootstrap Carousel)
-- [ ] Mostrar 4 productos más vendidos en tarjetas
-- [ ] Crear header público (sin autenticación)
-- [ ] Crear footer público
+- [x] Crear `cliente/index.php` - Home page pública
+- [x] Implementar carrusel con 5 productos destacados (Bootstrap Carousel)
+- [x] Mostrar 4 productos más vendidos en tarjetas
+- [x] Crear header público (sin autenticación)
+- [x] Crear footer público
 
 #### Paso 2.2: Catálogo de Productos
-- [ ] Crear `cliente/catalogo.php` - Listado de productos por categorías
-- [ ] Ordenar categorías alfabéticamente (A-Z)
-- [ ] Mostrar productos en tarjetas con:
+- [x] Crear `cliente/catalogo.php` - Listado de productos por categorías
+- [x] Ordenar categorías alfabéticamente (A-Z)
+- [x] Mostrar productos en tarjetas con:
   - Imagen
   - Nombre del producto
   - Año del modelo
   - Precio
   - Descuento (si aplica)
   - Botón "Agregar al carrito"
-- [ ] Implementar filtros por categoría
-- [ ] Implementar búsqueda de productos
+- [x] Implementar filtros por categoría
+- [x] Implementar búsqueda de productos
 
 #### Paso 2.3: Vista Detalle de Producto
-- [ ] Crear `cliente/producto.php?id=` - Detalle de producto individual
-- [ ] Mostrar información completa
-- [ ] Opción para seleccionar cantidad
-- [ ] Botón "Agregar al carrito"
+- [x] Crear `cliente/producto.php?id=` - Detalle de producto individual
+- [x] Mostrar información completa
+- [x] Opción para seleccionar cantidad
+- [x] Botón "Agregar al carrito"
 
 ---
 
 ### **FASE 3: SISTEMA DE CARRITO DE COMPRAS** ⏱️ Estimado: 3-4 horas
 
 #### Paso 3.1: Funcionalidad del Carrito
-- [ ] Crear `cliente/carrito.php` - Vista del carrito
-- [ ] Implementar lógica para agregar productos (usando sesiones o cookies)
-- [ ] Mostrar productos agregados en tabla/lista
-- [ ] Calcular subtotales y total general
-- [ ] Aplicar descuentos automáticamente
-- [ ] Permitir modificar cantidades
-- [ ] Permitir eliminar productos del carrito
-- [ ] Validar disponibilidad de stock
+- [x] Crear `cliente/carrito.php` - Vista del carrito
+- [x] Implementar lógica para agregar productos (usando sesiones o cookies)
+- [x] Mostrar productos agregados en tabla/lista
+- [x] Calcular subtotales y total general
+- [x] Aplicar descuentos automáticamente
+- [x] Permitir modificar cantidades
+- [x] Permitir eliminar productos del carrito
+- [x] Validar disponibilidad de stock
 
 #### Paso 3.2: API/Ajax para Carrito
-- [ ] Crear `api/carrito_add.php` - Agregar producto vía AJAX
-- [ ] Crear `api/carrito_update.php` - Actualizar cantidad
-- [ ] Crear `api/carrito_remove.php` - Eliminar producto
-- [ ] Crear `api/carrito_get.php` - Obtener contenido del carrito
-- [ ] Mostrar contador de productos en el menú
+- [x] Crear `api/carrito_add.php` - Agregar producto vía AJAX
+- [x] Crear `api/carrito_update.php` - Actualizar cantidad
+- [x] Crear `api/carrito_remove.php` - Eliminar producto
+- [x] Crear `api/carrito_get.php` - Obtener contenido del carrito
+- [x] Mostrar contador de productos en el menú
 
 ---
 
