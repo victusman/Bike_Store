@@ -12,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $year = $_POST['model_year'] ?? null;
     $price = $_POST['price'] ?? 0;
     $category_id = $_POST['category_id'] ?? null;
+    $descuento = isset($_POST['descuento']) ? floatval($_POST['descuento']) : 0.00;
+    $destacado = isset($_POST['destacado']) ? 1 : 0;
 
     if ($name === '') $errors[] = 'El nombre es requerido.';
 
@@ -25,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-    $stmt = $pdo->prepare("INSERT INTO productos (product_name, foto, model_year, price, category_id) VALUES (:n, :f, :y, :p, :c)");
-        $stmt->execute(['n'=>$name, 'f'=>$fotoName, 'y'=>$year,'p'=>$price,'c'=>$category_id ?: null]);
+    $stmt = $pdo->prepare("INSERT INTO productos (product_name, foto, model_year, price, category_id, descuento, destacado) VALUES (:n, :f, :y, :p, :c, :descuento, :destacado)");
+        $stmt->execute(['n'=>$name, 'f'=>$fotoName, 'y'=>$year,'p'=>$price,'c'=>$category_id ?: null, 'descuento'=>$descuento, 'destacado'=>$destacado]);
         header('Location: index.php');
         exit;
     }
@@ -57,6 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="<?php echo $c['category_id']; ?>"><?php echo htmlspecialchars($c['descripcion']); ?></option>
             <?php endforeach; ?>
         </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Descuento (%)</label>
+        <input class="form-control" type="number" step="0.01" name="descuento" value="0.00">
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+        <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="destacado" id="destacado">
+            <label class="form-check-label" for="destacado">Destacado</label>
+        </div>
     </div>
     <div class="col-12">
         <label class="form-label">Foto</label>

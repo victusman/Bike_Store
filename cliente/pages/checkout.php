@@ -88,8 +88,11 @@ $costo_envio = ($total_con_descuento >= 500) ? 0 : 50;
 $total_final = $total_con_descuento + $costo_envio;
 
 // Obtener métodos de pago disponibles
-$stmt = $pdo->query("SELECT * FROM metodos_pago WHERE activo = 1 ORDER BY nombre");
+$stmt = $pdo->query("SELECT * FROM metodos_pago WHERE activo = 1 ORDER BY orden_visualizacion, nombre");
 $metodos_pago = $stmt->fetchAll();
+
+// Determinar método seleccionado previamente (si existe) o marcar por defecto el primero
+$selected_metodo_id = $_SESSION['checkout_data']['metodo_pago_id'] ?? null;
 
 // Procesar el formulario
 $error = '';
@@ -273,19 +276,36 @@ include __DIR__ . '/../components/header_publico.php';
                         <h5 class="mb-0"><i class="fas fa-credit-card"></i> Método de Pago</h5>
                     </div>
                     <div class="card-body">
+                        <!-- Aviso de pago simulado -->
+                        <div class="alert alert-info border-info mb-3">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Modo Demo:</strong> Los pagos son simulados. No se realizarán cargos reales.
+                        </div>
+                        
                         <?php if (empty($metodos_pago)): ?>
                         <div class="alert alert-warning">
                             No hay métodos de pago disponibles. Por favor contacta al administrador.
                         </div>
                         <?php else: ?>
                         <div class="metodos-pago">
-                            <?php foreach ($metodos_pago as $metodo): ?>
+                            <?php 
+                            $first = true;
+                            foreach ($metodos_pago as $metodo): 
+                                // Determinar si este método debe estar seleccionado
+                                $isChecked = false;
+                                if ($selected_metodo_id !== null) {
+                                    $isChecked = ($selected_metodo_id == $metodo['metodo_id']);
+                                } elseif ($first) {
+                                    $isChecked = true; // Marcar primer método por defecto
+                                }
+                            ?>
                             <div class="form-check metodo-pago-item">
                                 <input class="form-check-input" 
                                        type="radio" 
                                        name="metodo_pago" 
                                        id="metodo_<?php echo $metodo['metodo_id']; ?>"
                                        value="<?php echo $metodo['metodo_id']; ?>"
+                                       <?php echo $isChecked ? 'checked' : ''; ?>
                                        required>
                                 <label class="form-check-label w-100" for="metodo_<?php echo $metodo['metodo_id']; ?>">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -295,19 +315,29 @@ include __DIR__ . '/../components/header_publico.php';
                                             <br><small class="text-muted"><?php echo htmlspecialchars($metodo['descripcion']); ?></small>
                                             <?php endif; ?>
                                         </div>
-                                        <i class="fas fa-<?php 
-                                            echo match(strtolower($metodo['nombre'])) {
-                                                'efectivo' => 'money-bill-wave',
-                                                'tarjeta de crédito', 'tarjeta de débito' => 'credit-card',
-                                                'qr' => 'qrcode',
-                                                'transferencia' => 'exchange-alt',
-                                                default => 'wallet'
-                                            };
-                                        ?> fa-2x text-primary"></i>
+                                        <?php
+                                            // Determinar icono según el nombre del método de pago (compatible con PHP <8 match)
+                                            $mp_nombre = strtolower(trim($metodo['nombre'] ?? ''));
+                                            if (strpos($mp_nombre, 'efectivo') !== false) {
+                                                $mp_icon = 'money-bill-wave';
+                                            } elseif (strpos($mp_nombre, 'tarjeta') !== false) {
+                                                $mp_icon = 'credit-card';
+                                            } elseif (strpos($mp_nombre, 'qr') !== false) {
+                                                $mp_icon = 'qrcode';
+                                            } elseif (strpos($mp_nombre, 'transferencia') !== false) {
+                                                $mp_icon = 'exchange-alt';
+                                            } else {
+                                                $mp_icon = 'wallet';
+                                            }
+                                        ?>
+                                        <i class="fas fa-<?php echo $mp_icon; ?> fa-2x text-primary"></i>
                                     </div>
                                 </label>
                             </div>
-                            <?php endforeach; ?>
+                            <?php 
+                                $first = false;
+                                endforeach; 
+                            ?>
                         </div>
                         <?php endif; ?>
                     </div>

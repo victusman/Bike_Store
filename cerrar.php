@@ -9,5 +9,6 @@ if (ini_get('session.use_cookies')) {
     );
 }
 session_destroy();
-header('Location: login.php');
+// Al cerrar sesión desde el área administrativa, redirigir al login público del cliente
+header('Location: /Bike_Store/cliente/pages/login_cliente.php');
 exit;

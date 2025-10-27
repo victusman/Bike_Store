@@ -5,3 +5,39 @@ body { margin: 0; }
 
 /* Ajustes de hero en la portada */
 .display-4 { font-weight: 600; }
+
+/* Estilos para productos más vendidos */
+.hover-shadow {
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Badge de descuento */
+.discount-badge {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Animación para iconos de fuego */
+.fa-fire {
+    animation: flicker 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+    0% {
+        text-shadow: 0 0 2px #ff6b35;
+    }
+    100% {
+        text-shadow: 0 0 8px #ff6b35, 0 0 12px #ff6b35;
+    }
+}

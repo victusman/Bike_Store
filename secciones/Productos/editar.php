@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $year = $_POST['model_year'] ?? null;
     $price = $_POST['price'] ?? 0;
     $category_id = $_POST['category_id'] ?? null;
+    $descuento = isset($_POST['descuento']) ? floatval($_POST['descuento']) : 0.00;
+    $destacado = isset($_POST['destacado']) ? 1 : 0;
 
     if ($name === '') $errors[] = 'El nombre es requerido.';
 
@@ -36,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-    $stmt = $pdo->prepare('UPDATE productos SET product_name=:n, foto=:f, model_year=:y, price=:p, category_id=:c WHERE product_id=:id');
-        $stmt->execute(['n'=>$name,'f'=>$fotoName,'y'=>$year,'p'=>$price,'c'=>$category_id ?: null,'id'=>$id]);
+    $stmt = $pdo->prepare('UPDATE productos SET product_name=:n, foto=:f, model_year=:y, price=:p, category_id=:c, descuento=:descuento, destacado=:destacado WHERE product_id=:id');
+        $stmt->execute(['n'=>$name,'f'=>$fotoName,'y'=>$year,'p'=>$price,'c'=>$category_id ?: null,'descuento'=>$descuento,'destacado'=>$destacado,'id'=>$id]);
         header('Location: index.php');
         exit;
     }
@@ -72,6 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="<?php echo $c['category_id']; ?>" <?php if ($product['category_id']==$c['category_id']) echo 'selected'; ?>><?php echo htmlspecialchars($c['descripcion']); ?></option>
             <?php endforeach; ?>
         </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Descuento (%)</label>
+        <input class="form-control" type="number" step="0.01" name="descuento" value="<?php echo htmlspecialchars($product['descuento'] ?? 0); ?>">
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+        <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="destacado" id="destacado" <?php if (!empty($product['destacado']) && $product['destacado']==1) echo 'checked'; ?>>
+            <label class="form-check-label" for="destacado">Destacado</label>
+        </div>
     </div>
     <div class="col-12">
         <p>Foto actual: <?php if ($product['foto']): ?><img src="../../uploads/<?php echo htmlspecialchars($product['foto']); ?>" style="max-width:120px;" alt="foto"><?php else: echo '—'; endif; ?></p>

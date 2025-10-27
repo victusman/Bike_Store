@@ -32,6 +32,9 @@ agregar  -->
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="/Bike_Store/index.php">Inicio</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-primary btn-sm ms-2 text-dark" href="/Bike_Store/cliente/index.php" role="button">Tienda</a>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Categorias/index.php">Categorías</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/customers/index.php">Clientes</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Bike_Store/secciones/Productos/index.php">Productos</a></li>

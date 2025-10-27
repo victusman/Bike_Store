@@ -1,8 +1,15 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../db.php';
+require_once __DIR__ . '/../../libs/autoload.inc.php';
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 $pageTitle = 'Confirmar Pedido - Bike Store';
+
+// VERSIÓN DEFINITIVA - 27 Oct 2025 17:05 - NO BORRAR ESTA LÍNEA
+// Si ves este comentario en el log de errores, el archivo está actualizado
 
 // Verificar que existe la sesión de checkout
 if (!isset($_SESSION['checkout_data']) || !isset($_SESSION['customer_id']) || empty($_SESSION['carrito'])) {
@@ -16,7 +23,13 @@ $order_id = 0;
 
 // Procesar la confirmación del pedido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // LOG: Confirmar que este es el archivo correcto
+    error_log("=== CONFIRMAR_PEDIDO.PHP - VERSIÓN 27/10/2025 17:05 ===");
+    
     try {
+        // Habilitar excepciones PDO para debugging
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
         $pdo->beginTransaction();
         
         $checkout_data = $_SESSION['checkout_data'];
@@ -46,13 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Crear el pedido en la tabla orders
-        $stmt = $pdo->prepare("INSERT INTO orders 
-            (customer_id, order_date, required_date, shipped_date, order_status, store_id, staff_id, 
-             subtotal, descuento, costo_envio, total_amount, metodo_pago, direccion_envio, notas) 
-            VALUES 
-            (:customer_id, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), NULL, 1, 1, 1,
-             :subtotal, :descuento, :envio, :total, :metodo_pago, :direccion, :notas)");
-        
         $direccion_completa = $checkout_data['street'] . ', ' . $checkout_data['city'];
         if (!empty($checkout_data['state'])) {
             $direccion_completa .= ', ' . $checkout_data['state'];
@@ -61,28 +67,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $direccion_completa .= ' ' . $checkout_data['zip_code'];
         }
         
-        $stmt->execute([
-            'customer_id' => $_SESSION['customer_id'],
-            'subtotal' => $checkout_data['subtotal'],
-            'descuento' => $checkout_data['descuento'],
-            'envio' => $checkout_data['envio'],
-            'total' => $checkout_data['total'],
-            'metodo_pago' => $metodo_pago['nombre'],
-            'direccion' => $direccion_completa,
-            'notas' => $checkout_data['notas'] ?? ''
-        ]);
+        // SIMULACIÓN DE PAGO - Todos los métodos de pago son ficticios
+        // En un sistema real, aquí se integraría con pasarelas de pago reales
+        // VERSIÓN CORREGIDA v3 - 27/10/2025 17:00
+        $pago_simulado_exitoso = true; // Simular que el pago siempre es exitoso
         
-        $order_id = $pdo->lastInsertId();
+        if (!$pago_simulado_exitoso) {
+            throw new Exception('Pago rechazado (simulación)');
+        }
+        
+        // Preparar datos para INSERT (las claves SIN dos puntos, placeholders SQL CON dos puntos)
+        $sql = "INSERT INTO orders 
+            (customer_id, order_date, user_id, estado, metodo_pago_id, metodo_pago, 
+             subtotal, descuento, costo_envio, total_amount, direccion_envio, notas) 
+            VALUES 
+            (:customer_id, NOW(), NULL, 1, :metodo_pago_id, :metodo_pago,
+             :subtotal, :descuento, :costo_envio, :total_amount, :direccion_envio, :notas)";
+        
+        $params = [
+            'customer_id' => (int)$_SESSION['customer_id'],
+            'metodo_pago_id' => (int)$checkout_data['metodo_pago_id'],
+            'metodo_pago' => (string)$metodo_pago['nombre'],
+            'subtotal' => (float)$checkout_data['subtotal'],
+            'descuento' => (float)$checkout_data['descuento'],
+            'costo_envio' => (float)$checkout_data['envio'],
+            'total_amount' => (float)$checkout_data['total'],
+            'direccion_envio' => (string)$direccion_completa,
+            'notas' => isset($checkout_data['notas']) && $checkout_data['notas'] !== '' ? (string)$checkout_data['notas'] : ''
+        ];
+        
+        // LOG detallado antes de ejecutar
+        error_log("SQL a ejecutar: " . $sql);
+        error_log("Parámetros (" . count($params) . "): " . json_encode($params));
+        
+        try {
+            $stmt = $pdo->prepare($sql);
+            $result = $stmt->execute($params);
+            
+            if (!$result) {
+                $errorInfo = $stmt->errorInfo();
+                error_log("❌ INSERT FALLÓ - Error PDO: " . print_r($errorInfo, true));
+                error_log("Params: " . print_r($params, true));
+                throw new Exception('Error en INSERT: ' . ($errorInfo[2] ?? 'Error desconocido'));
+            } else {
+                error_log("✅ INSERT EXITOSO - Execute devolvió TRUE");
+                $order_id = $pdo->lastInsertId();
+                error_log("✅ Order ID generado: " . $order_id);
+                
+                if (!$order_id) {
+                    throw new Exception('No se generó order_id después del INSERT');
+                }
+            }
+        } catch (PDOException $e) {
+            error_log("❌ PDOException: " . $e->getMessage());
+            error_log("SQL: " . $sql);
+            error_log("Params: " . print_r($params, true));
+            $pdo->rollBack();
+            throw new Exception('Error de base de datos: ' . $e->getMessage());
+        }
+        
+        // $order_id ya se asignó dentro del try-catch anterior
         
         // Insertar los items del pedido
         foreach ($_SESSION['carrito'] as $item) {
             $stmt = $pdo->prepare("INSERT INTO order_items 
-                (order_id, item_id, product_id, quantity, list_price, discount) 
-                VALUES (:order_id, :item_id, :product_id, :quantity, :price, :discount)");
+                (order_id, product_id, quantity, price, discount) 
+                VALUES (:order_id, :product_id, :quantity, :price, :discount)");
             
             $stmt->execute([
                 'order_id' => $order_id,
-                'item_id' => $item['product_id'], // Usar product_id como item_id
                 'product_id' => $item['product_id'],
                 'quantity' => $item['quantity'],
                 'price' => $item['precio_con_descuento'],
@@ -101,7 +154,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
         
+        error_log("✅ Todos los inserts completados, haciendo COMMIT...");
         $pdo->commit();
+        error_log("✅ COMMIT exitoso - Transacción completada");
+        
+        // ==========================================
+        // ENVÍO AUTOMÁTICO DE FACTURA POR EMAIL
+        // ==========================================
+        
+        $email_enviado = false;
+        $email_error = '';
+        
+        try {
+            // Cargar servicio de email
+            require_once __DIR__ . '/../../libs/EmailService.php';
+            
+            // Obtener datos completos del pedido para el PDF
+            $stmt = $pdo->prepare("
+                SELECT o.*, c.first_name, c.last_name, c.email, c.phone 
+                FROM orders o 
+                INNER JOIN customer c ON o.customer_id = c.customer_id
+                WHERE o.order_id = :id
+            ");
+            $stmt->execute(['id' => $order_id]);
+            $pedido = $stmt->fetch();
+            
+            // Obtener items del pedido
+            $stmt = $pdo->prepare("
+                SELECT oi.*, p.product_name 
+                FROM order_items oi 
+                INNER JOIN productos p ON oi.product_id = p.product_id
+                WHERE oi.order_id = :id
+            ");
+            $stmt->execute(['id' => $order_id]);
+            $items = $stmt->fetchAll();
+            
+            // Generar HTML del PDF (reutilizar código de factura.php)
+            ob_start();
+            include __DIR__ . '/plantilla_factura.php'; // Crearemos este archivo
+            $html = ob_get_clean();
+            
+            // Configurar Dompdf
+            $options = new Options();
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isRemoteEnabled', true);
+            $options->set('defaultFont', 'DejaVu Sans');
+            
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('letter', 'portrait');
+            $dompdf->render();
+            
+            // Obtener PDF como string (en lugar de enviarlo al navegador)
+            $pdfContent = $dompdf->output();
+            
+            // Crear instancia del servicio de email
+            $emailService = new EmailService();
+            
+            // Preparar datos para el email
+            $datosOrden = [
+                'total' => $pedido['total_amount'],
+                'fecha' => $pedido['order_date'],
+                'cantidad_productos' => count($items)
+            ];
+            
+            // Enviar email con PDF adjunto
+            $email_enviado = $emailService->enviarFactura(
+                $pedido['email'],
+                $pedido['first_name'] . ' ' . $pedido['last_name'],
+                $order_id,
+                $pdfContent,
+                $datosOrden
+            );
+            
+            if (!$email_enviado) {
+                $errores = $emailService->getErrores();
+                $email_error = !empty($errores) ? implode(', ', $errores) : 'Error desconocido';
+                error_log("Error al enviar factura por email: $email_error");
+            }
+            
+        } catch (Exception $e) {
+            $email_error = $e->getMessage();
+            error_log("Excepción al enviar factura: " . $email_error);
+        }
         
         // Limpiar carrito y datos de checkout
         $_SESSION['carrito'] = [];
@@ -110,7 +245,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $orden_creada = true;
         
     } catch (Exception $e) {
+        error_log("❌ EXCEPCIÓN CAPTURADA: " . $e->getMessage());
+        error_log("❌ Haciendo ROLLBACK...");
         $pdo->rollBack();
+        error_log("❌ ROLLBACK completado");
         $error = 'Error al procesar el pedido: ' . $e->getMessage();
     }
 }
@@ -153,10 +291,28 @@ include __DIR__ . '/../components/header_publico.php';
                         <h3 class="text-primary mb-0">#<?php echo str_pad($order_id, 6, '0', STR_PAD_LEFT); ?></h3>
                     </div>
                     
+                    <!-- Estado del envío de email -->
+                    <?php if (isset($email_enviado)): ?>
+                        <?php if ($email_enviado): ?>
+                        <div class="alert alert-success">
+                            <i class="fas fa-envelope-circle-check"></i> 
+                            <strong>¡Factura enviada!</strong> Hemos enviado tu factura por correo electrónico.
+                        </div>
+                        <?php else: ?>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            No pudimos enviar el email automáticamente, pero puedes descargar tu factura a continuación.
+                            <?php if (isset($email_error) && !empty($email_error)): ?>
+                            <br><small>Razón: <?php echo htmlspecialchars($email_error); ?></small>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+                    <?php else: ?>
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> 
-                        Recibirás un correo electrónico con los detalles de tu pedido.
+                        Puedes descargar tu factura más abajo o desde "Mis Pedidos".
                     </div>
+                    <?php endif; ?>
                     
                     <div class="d-grid gap-2 mt-4">
                         <a href="factura.php?order_id=<?php echo $order_id; ?>" class="btn btn-success btn-lg" target="_blank">
@@ -358,6 +514,11 @@ include __DIR__ . '/../components/header_publico.php';
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle"></i> 
                             <strong>¡Último paso!</strong> Revisa que toda la información sea correcta antes de confirmar.
+                        </div>
+                        
+                        <div class="alert alert-info border-info">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Modo Demo:</strong> Este es un pago simulado. No se realizarán cargos reales a tu cuenta.
                         </div>
                         
                         <div class="d-grid gap-2">

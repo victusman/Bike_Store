@@ -219,11 +219,11 @@
 - [x] Incluir total y descuentos
 
 #### Paso 6.2: Envío por Email
-- [ ] Configurar PHPMailer o función `mail()` de PHP
-- [ ] Crear plantilla de email para factura
-- [ ] Adjuntar PDF de factura
-- [ ] Enviar automáticamente al finalizar compra
-- [ ] Confirmar envío al cliente
+- [x] Configurar PHPMailer o función `mail()` de PHP
+- [x] Crear plantilla de email para factura
+- [x] Adjuntar PDF de factura
+- [x] Enviar automáticamente al finalizar compra
+- [x] Confirmar envío al cliente
 
 ---
 
