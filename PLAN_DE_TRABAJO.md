@@ -161,62 +161,62 @@
 ### **FASE 4: AUTENTICACIÓN DE CLIENTE** ⏱️ Estimado: 2-3 horas
 
 #### Paso 4.1: Login de Cliente SIN Contraseña
-- [ ] Crear `cliente/login_cliente.php` - Login simplificado
-- [ ] Validar solo por email o identificación
-- [ ] Enviar código de verificación por email (opcional)
-- [ ] Crear sesión de cliente
+- [x] Crear `cliente/login_cliente.php` - Login simplificado
+- [x] Validar solo por email o identificación
+- [x] Enviar código de verificación por email (opcional)
+- [x] Crear sesión de cliente
 
 #### Paso 4.2: Registro Rápido
-- [ ] Crear `cliente/registro.php` - Formulario de registro
-- [ ] Solicitar solo datos básicos: nombre, apellido, email, teléfono
-- [ ] Autocompletar dirección (opcional)
-- [ ] Validar email único
+- [x] Crear `cliente/registro.php` - Formulario de registro
+- [x] Solicitar solo datos básicos: nombre, apellido, email, teléfono
+- [x] Autocompletar dirección (opcional)
+- [x] Validar email único
 
 #### Paso 4.3: Perfil de Cliente
-- [ ] Crear `cliente/perfil.php` - Ver y editar datos personales
-- [ ] Ver historial de pedidos
-- [ ] Actualizar dirección de envío
+- [x] Crear `cliente/perfil.php` - Ver y editar datos personales
+- [x] Ver historial de pedidos
+- [x] Actualizar dirección de envío
 
 ---
 
 ### **FASE 5: PROCESO DE COMPRA** ⏱️ Estimado: 3-4 horas
 
 #### Paso 5.1: Checkout
-- [ ] Crear `cliente/checkout.php` - Página de finalización de compra
-- [ ] Verificar login de cliente (redirigir si no está logueado)
-- [ ] Mostrar resumen del carrito
-- [ ] Solicitar/confirmar dirección de envío
-- [ ] Seleccionar método de pago
+- [x] Crear `cliente/checkout.php` - Página de finalización de compra
+- [x] Verificar login de cliente (redirigir si no está logueado)
+- [x] Mostrar resumen del carrito
+- [x] Solicitar/confirmar dirección de envío
+- [x] Seleccionar método de pago
 
 #### Paso 5.2: Métodos de Pago
-- [ ] Crear `cliente/pago.php` - Página de selección de método
-- [ ] Mostrar opciones:
+- [x] Crear `cliente/pago.php` - Página de selección de método
+- [x] Mostrar opciones:
   - ✅ Envío gratuito
   - ✅ Carteras electrónicas (QR)
   - ✅ Débito automático
   - ✅ Efectivo contra entrega
-- [ ] Implementar lógica de procesamiento (simulado)
-- [ ] Guardar método seleccionado en el pedido
+- [x] Implementar lógica de procesamiento (simulado)
+- [x] Guardar método seleccionado en el pedido
 
 #### Paso 5.3: Confirmación de Pedido
-- [ ] Crear `cliente/confirmar_pedido.php` - Procesar pedido
-- [ ] Insertar registro en tabla `orders`
-- [ ] Insertar items en tabla `order_items`
-- [ ] Actualizar stock de productos
-- [ ] Vaciar carrito
-- [ ] Generar número de orden
+- [x] Crear `cliente/confirmar_pedido.php` - Procesar pedido
+- [x] Insertar registro en tabla `orders`
+- [x] Insertar items en tabla `order_items`
+- [x] Actualizar stock de productos
+- [x] Vaciar carrito
+- [x] Generar número de orden
 
 ---
 
 ### **FASE 6: FACTURACIÓN** ⏱️ Estimado: 2-3 horas
 
 #### Paso 6.1: Generar Factura PDF
-- [ ] Crear `cliente/factura.php?order_id=` - Generar factura en PDF
-- [ ] Usar dompdf (ya está instalado)
-- [ ] Incluir información del cliente
-- [ ] Incluir detalle de productos
-- [ ] Incluir método de pago
-- [ ] Incluir total y descuentos
+- [x] Crear `cliente/factura.php?order_id=` - Generar factura en PDF
+- [x] Usar dompdf (ya está instalado)
+- [x] Incluir información del cliente
+- [x] Incluir detalle de productos
+- [x] Incluir método de pago
+- [x] Incluir total y descuentos
 
 #### Paso 6.2: Envío por Email
 - [ ] Configurar PHPMailer o función `mail()` de PHP
