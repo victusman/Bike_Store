@@ -406,7 +406,7 @@ include __DIR__ . '/../components/header_publico.php';
                     <?php endif; ?>
                     
                     <div class="d-grid gap-2 mt-4">
-                        <a href="factura.php?order_id=<?php echo $order_id; ?>" class="btn btn-success btn-lg" target="_blank">
+                        <a href="ver_factura.php?order_id=<?php echo $order_id; ?>" class="btn btn-success btn-lg" target="_blank">
                             <i class="fas fa-file-pdf"></i> Descargar Factura PDF
                         </a>
                         <a href="mis_pedidos.php" class="btn btn-primary btn-lg">

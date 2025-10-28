@@ -158,7 +158,7 @@ include __DIR__ . '/../components/header_publico.php';
                                                     title="Ver detalle">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <a href="factura.php?order_id=<?php echo $pedido['order_id']; ?>" 
+                                            <a href="ver_factura.php?order_id=<?php echo $pedido['order_id']; ?>" 
                                                class="btn btn-sm btn-outline-success" 
                                                target="_blank"
                                                title="Descargar factura">
