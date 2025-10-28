@@ -12,6 +12,9 @@ if (!isset($pedido) || !isset($items)) {
     die('Error: Datos de factura no proporcionados');
 }
 
+// Logo configurado con ruta simple para evitar problemas con extensión GD
+// El archivo logo.png debe estar en la misma carpeta que esta plantilla
+
 // Función para convertir número a texto (idéntica a lista_orders.php)
 function numeroATexto($numero)
 {
@@ -108,8 +111,23 @@ $centavos = round(($totalFinal - $totalEntero) * 100);
         .header-left { font-size: 9pt; }
         .header-right { text-align: right; font-size: 9pt; }
         .logo {
-            max-width: 150px;
+            max-width: 250px;
+            max-height: 350px;
             height: auto;
+            margin-bottom: 10px;
+        }
+        .company-name {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 5px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .company-tagline {
+            font-size: 10pt;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
         }
         .titulo-recibo {
             font-size: 24pt;
@@ -221,7 +239,16 @@ $centavos = round(($totalFinal - $totalEntero) * 100);
             <?php echo date('d/m/Y', strtotime($pedido['order_date'])); ?>
         </div>
         <div class="header-center">
-            <img src="logo.png" alt="Bike Store" class="logo">
+            <?php 
+            $logoPath = __DIR__ . '/logoClien.png';
+            if (file_exists($logoPath)) {
+                $logoData = base64_encode(file_get_contents($logoPath));
+                $logoMime = mime_content_type($logoPath);
+                echo '<img src="data:' . $logoMime . ';base64,' . $logoData . '" alt="Bike Store" class="logo">';
+            } else {
+                echo '<div class="company-name">Bike Store</div>';
+            }
+            ?>
         </div>
         <div class="header-right">
          
