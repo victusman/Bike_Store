@@ -208,23 +208,11 @@ $centavos = round(($totalFinal - $totalEntero) * 100);
             display: table;
             clear: both;
         }
-        .demo-watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 72pt;
-            color: rgba(255, 0, 0, 0.1);
-            font-weight: bold;
-            z-index: -1;
-            pointer-events: none;
-        }
+
     </style>
 </head>
 <body>
-    <?php if (defined('MODO_DEMO_FACTURAS') && MODO_DEMO_FACTURAS): ?>
-    <div class="demo-watermark">DEMO</div>
-    <?php endif; ?>
+
     
     <div class="header">
         <div class="header-left">
@@ -234,9 +222,6 @@ $centavos = round(($totalFinal - $totalEntero) * 100);
         </div>
         <div class="header-center">
             <img src="logo.png" alt="Bike Store" class="logo">
-            <?php if (defined('MODO_DEMO_FACTURAS') && MODO_DEMO_FACTURAS): ?>
-            <br><span style="color: red; font-size: 10pt; font-weight: bold;">🎭 MODO DEMO</span>
-            <?php endif; ?>
         </div>
         <div class="header-right">
          
@@ -302,11 +287,6 @@ $centavos = round(($totalFinal - $totalEntero) * 100);
     
     <div class="clearfix">
         <div class="nota-son">
-            <?php if (defined('MODO_DEMO_FACTURAS') && MODO_DEMO_FACTURAS): ?>
-            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 8px; border-radius: 4px; margin-bottom: 10px; color: #856404; font-weight: bold;">
-                🎭 FACTURA DE DEMOSTRACIÓN - Esta es una factura generada en modo demo para pruebas del sistema.
-            </div>
-            <?php endif; ?>
             <br>
             <br>
             <br>

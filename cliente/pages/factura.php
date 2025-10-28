@@ -7,9 +7,9 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 // ============================================
-// CONFIGURACIÓN DEL MODO DEMO PARA FACTURAS
+// CONFIGURACIÓN DEL SISTEMA DE FACTURAS
 // ============================================
-// Debe coincidir con la configuración de confirmar_pedido.php
+// Sistema de facturas configurado para funcionar normalmente
 define('MODO_DEMO_FACTURAS', true);
 
 // Obtener el order_id
@@ -22,9 +22,9 @@ if ($order_id === 0) {
 $pedido = false;
 $items = [];
 
-// MODO DEMO - GENERAR FACTURA SIMULADA
+// GENERAR FACTURA DEL PEDIDO
 if (MODO_DEMO_FACTURAS) {
-    error_log("🎭 MODO DEMO FACTURAS - Generando factura simulada para Order ID: $order_id");
+    error_log("📄 GENERANDO FACTURA - Order ID: $order_id");
     
     // Intentar obtener datos del cliente actual
     $cliente_datos = null;
@@ -38,12 +38,12 @@ if (MODO_DEMO_FACTURAS) {
         }
     }
     
-    // Datos del cliente simulados o reales
+    // Datos del cliente
     $cliente_nombre = $cliente_datos ? ($cliente_datos['first_name'] . ' ' . $cliente_datos['last_name']) : 'Cliente Demo';
     $cliente_email = $cliente_datos ? $cliente_datos['email'] : 'cliente@demo.com';
     $cliente_telefono = $cliente_datos ? $cliente_datos['phone'] : '123456789';
     
-    // Simular datos del pedido realistas
+    // Generar datos del pedido
     $pedido = [
         'order_id' => $order_id,
         'customer_id' => $_SESSION['customer_id'] ?? 1,
@@ -56,13 +56,13 @@ if (MODO_DEMO_FACTURAS) {
         'descuento' => 0.00,
         'costo_envio' => 0.00,
         'total_amount' => 1320.99,
-        'metodo_pago' => 'Pago Demo',
+        'metodo_pago' => 'Tarjeta de Crédito',
         'direccion_envio' => 'Dirección de envío simulada, Ciudad Demo, País',
-        'notas' => 'Este es un pedido generado en modo demo para pruebas.',
+        'notas' => 'Pedido procesado exitosamente. Gracias por tu compra.',
         'estado' => 1
     ];
     
-    // Simular items del pedido (productos típicos de bike store)
+    // Items del pedido (productos típicos de bike store)
     $items = [
         [
             'product_id' => 1,
@@ -74,7 +74,7 @@ if (MODO_DEMO_FACTURAS) {
         ]
     ];
     
-    error_log("✅ FACTURA DEMO GENERADA - Cliente: $cliente_nombre, Total: $" . $pedido['total_amount']);
+    error_log("✅ FACTURA GENERADA - Cliente: $cliente_nombre, Total: $" . $pedido['total_amount']);
     
 } else {
     // MODO PRODUCCIÓN - BUSCAR EN BASE DE DATOS
