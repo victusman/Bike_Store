@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const url = '/Bike_Store/api/admin_session_info.php';
   const countEl = document.getElementById('active-sessions-count');
   const listEl = document.getElementById('active-sessions-list');
+  const ordersBody = document.getElementById('latest-orders-body');
 
   if (!countEl || !listEl) return;
 
@@ -73,8 +74,48 @@ document.addEventListener('DOMContentLoaded', function(){
       });
   }
 
+  // --- Últimos pedidos (auto-refresh) ---
+  function renderOrders(rows){
+    if (!ordersBody) return;
+    ordersBody.innerHTML = '';
+    if (!Array.isArray(rows) || rows.length === 0) {
+      ordersBody.innerHTML = "<tr><td colspan=5 class='text-muted'>No hay pedidos recientes</td></tr>";
+      return;
+    }
+
+    rows.forEach(r => {
+      const cliente = ((r.first_name || '') + ' ' + (r.last_name || '')).trim() || 'Sin cliente';
+      const fecha = r.order_date ? new Date(r.order_date).toLocaleDateString('es-ES') : '-';
+      const estado = r.estado || '-';
+      const total = (r.total !== null && r.total !== undefined) ? ('$' + Number(r.total).toFixed(2)) : '-';
+      const row = `<tr><td>#${escapeHtml(r.order_id)}</td><td>${escapeHtml(cliente)}</td><td>${escapeHtml(fecha)}</td><td><span class='badge bg-success'>${escapeHtml(estado)}</span></td><td class='text-end'>${escapeHtml(total)}</td></tr>`;
+      ordersBody.insertAdjacentHTML('beforeend', row);
+    });
+  }
+
+  function fetchLatestOrders(){
+    const api = '/Bike_Store/api/latest_orders.php?limit=8';
+    fetch(api, {credentials:'same-origin'})
+      .then(r=>r.json())
+      .then(json=>{
+        if (json.success) renderOrders(json.data);
+        else console.warn('No se pudieron cargar últimos pedidos', json.error);
+      }).catch(err=>{ console.error('Error al cargar últimos pedidos', err); });
+  }
+
+  // simple escape para prevenir inyección cuando insertamos HTML
+  function escapeHtml(s){
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/[&<>"'`]/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;","`":"&#96;"}[ch];
+    });
+  }
+
   // Carga inicial
   fetchSessions();
   // Actualiza cada 30s
   setInterval(fetchSessions, 30000);
+  // Carga inicial de pedidos y refresco cada 20s
+  fetchLatestOrders();
+  setInterval(fetchLatestOrders, 20000);
 });

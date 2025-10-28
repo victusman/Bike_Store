@@ -42,7 +42,7 @@
                     <h6>Contacto</h6>
                     <ul class="list-unstyled text-muted">
                         <li><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Ciudad</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-phone"></i>75678428</li>
                         <li><i class="fas fa-envelope"></i> info@bikestore.com</li>
                         <li><i class="fas fa-clock"></i> Lun-Vie: 9AM-6PM</li>
                     </ul>

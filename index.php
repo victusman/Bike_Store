@@ -170,7 +170,7 @@ if (!empty($_SESSION['user_id'])) {
                                         <th class="text-end">Total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="latest-orders-body">
                                 <?php
                                 // Obtener últimos 8 pedidos con total calculado desde order_items
                                 try {

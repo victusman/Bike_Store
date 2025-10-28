@@ -80,7 +80,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <small><i class="fas fa-phone"></i> +1 (555) 123-4567 | <i class="fas fa-envelope"></i> info@bikestore.com</small>
+                    <small><i class="fas fa-phone"></i> 75678428 | <i class="fas fa-envelope"></i> info@bikestore.com</small>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <small><i class="fas fa-shipping-fast"></i> Envío gratis en compras mayores a $500</small>
